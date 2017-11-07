@@ -5,4 +5,7 @@
 	<endpoint name="HelloWorld"
 			implementation="com.ojeksimangpred.OjolServices.HelloWorldImpl"
 			url-pattern="/OjolServices/aloha" />
+	<endpoint name="LocationManager"
+			implementation="com.ojeksimangpred.OjolServices.LocationManager"
+			url-pattern="/OjolServices/LocationManager" />
 </endpoints>

@@ -67,7 +67,7 @@ public class AccessManager extends HttpServlet {
 	}
 	
 	
-	public String generateToken(String username) {
+	public void generateToken(String username) {
 		SecureRandom random = new SecureRandom();
 		byte[] sharedSecret = new byte[64];
 		random.nextBytes(sharedSecret);
@@ -96,7 +96,7 @@ public class AccessManager extends HttpServlet {
 			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
 			if (connect != null) {
 				statement = connect.createStatement();
-		    		statement.executeUpdate("UPDATE user SET secret = '"+ sharedSecret.toString() +"' WHERE username = '"+username+"'");
+		    		statement.executeUpdate("UPDATE user SET token = '"+token+"',secret = '"+ sharedSecret.toString() +"' WHERE username = '"+username+"'");
 		    
 				if (statement != null) {
 					connect.close();			
@@ -107,7 +107,6 @@ public class AccessManager extends HttpServlet {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return token;
 	}
 	/*boolean checkTokenExpiry(String username, String token) {
 		SecureRandom random = new SecureRandom();

@@ -10,21 +10,16 @@ package com.ojeksimangpred.bean;
  * @author user
  */
 public class Driver {
-   int id;
-   String[] location;
-   int totalVotes;
-   int totalScore;
+   private int id;
+   private int totalVotes;
+   private int totalScore;
 
    int getId() {
        return (id);
    }
 
    public String toString() {
-    return ("driver [id=" + id + ", totalVotes=" + totalVotes + ", totalScore=" + totalScore + "]");
-  }
-
-   public String[] getLocation() {
-       return (location);
+	   return ("driver [id=" + id + ", totalVotes=" + totalVotes + ", totalScore=" + totalScore + "]");
    }
 
    public float getRating() {
@@ -41,10 +36,6 @@ public class Driver {
    
    public void setId(int x) {
        id = x;
-   }
-
-   public void setLocation(String locationx) {
-       location[location.length] = locationx;
    }
 
    public void setVotes(int x) {

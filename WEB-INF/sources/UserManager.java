@@ -73,10 +73,6 @@ public class UserManager extends HttpServlet {
 			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
 			
 			if (isFileUploaded) {
-				//out.println("Test1");
-				//out.println(newName);
-				//out.println(newPhone);
-				//out.println(newStatus);
 				String query="UPDATE user set name= ? ,phone= ? ,status= ?,pict= ? WHERE username= ? ";
 				preparedStatement = connect.prepareStatement(query);
 				preparedStatement.setString(1, newName);
@@ -89,13 +85,7 @@ public class UserManager extends HttpServlet {
 					//out.println("Success");
 					connect.close();
 				}
-				/*if ((username != null) && (newName != null) && (newPhone != null)) {
-				}*/
 			} else {
-				//out.println("Test2");
-				//out.println(newName);
-				//out.println(newPhone);
-				//out.println(newStatus);
 				String query="UPDATE user set name= ? ,phone= ? ,status= ? WHERE username= ? ";
 				preparedStatement = connect.prepareStatement(query);
 				preparedStatement.setString(1, newName);
@@ -106,8 +96,6 @@ public class UserManager extends HttpServlet {
 				if (row > 0) {
 					connect.close();
 				}	
-				/*if ((username != null) && (newName != null) && (newPhone != null)) {
-				}*/
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,13 +103,20 @@ public class UserManager extends HttpServlet {
 			e.printStackTrace();
 		}
 		User user = new User();
+		Driver driver = new Driver();
 		AccessManager AM = new AccessManager();
-		String token = AM.generateToken(username);
 		user = UserManager.fetchUser(username);
-		user.setToken(token);
 		Gson gson = new Gson();
-		String json = gson.toJson(user);
-		response.sendRedirect("../profile/profile.jsp?user="+json);
+		String uJson = gson.toJson(user);
+		if (user.getStatus().equals("driver")) {
+			driver = UserManager.fetchDriver(user.getId());
+			String dJson = gson.toJson(driver);
+			response.sendRedirect("../profile/profile.jsp?user="+uJson+"&driver="+dJson);
+		} else {
+			response.sendRedirect("../profile/profile.jsp?user="+uJson);
+		}
+
+		response.sendRedirect("../profile/profile.jsp?user="+uJson);
 	}
 	public static User fetchUser(String username) {
 		User user = new User();
@@ -141,6 +136,7 @@ public class UserManager extends HttpServlet {
 				user.setEmail(resultSet.getString("email"));
 				user.setPhone(resultSet.getString("phone"));
 				user.setUsername(resultSet.getString("username"));
+				user.setToken(resultSet.getString("token"));
 				user.setStatus(resultSet.getString("status"));
 			}
 			connect.close();

@@ -22,7 +22,7 @@ import java.util.Date;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
-import com.ojeksimangpred.bean.User;
+import com.ojeksimangpred.bean.*;
 
 
 
@@ -33,18 +33,24 @@ public class Login extends HttpServlet {
 	throws ServletException,IOException {
 		
 		User user = new User();
+		Driver driver = new Driver();
 		AccessManager AM = new AccessManager();
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
 		PrintWriter out = response.getWriter();
 		if (this.validate(username,password)) {
-			String token = AM.generateToken(username);
+			AM.generateToken(username);
 			user = UserManager.fetchUser(username);
-			user.setToken(token);
 			Gson gson = new Gson();
-			String json = gson.toJson(user);
-			response.sendRedirect("../profile/profile.jsp?user="+json);
+			String uJson = gson.toJson(user);
+			if (user.getStatus().equals("driver")) {
+				driver = UserManager.fetchDriver(user.getId());
+				String dJson = gson.toJson(driver);
+				response.sendRedirect("../profile/profile.jsp?user="+uJson+"&driver="+dJson);
+			} else {
+				response.sendRedirect("../profile/profile.jsp?user="+uJson);
+			}
 		}  else {
 			out.print("Username or Password incorrect");
 			RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");

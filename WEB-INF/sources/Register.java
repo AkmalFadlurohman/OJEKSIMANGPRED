@@ -38,15 +38,18 @@ public class Register extends HttpServlet {
 		}
 		if (password.equals(cpassword) ) {
 			insertUserToDB(fullname,username,email,password,phone,status);
+			AM.generateToken(username);
 			user = UserManager.fetchUser(username);
-			String token = AM.generateToken(username);
-			user.setToken(token);
 			Gson gson = new Gson();
-			String json = gson.toJson(user);
-			if (status.equals("driver")) {
+			String uJson = gson.toJson(user);
+			if (user.getStatus().equals("driver")) {
 				insertDriverToDB(user.getId());
+				driver = UserManager.fetchDriver(user.getId());
+				String dJson = gson.toJson(driver);
+				response.sendRedirect("../profile/profile.jsp?user="+uJson+"&driver="+dJson);
+			} else {
+				response.sendRedirect("../profile/profile.jsp?user="+uJson);
 			}
-			response.sendRedirect("../profile/profile.jsp?user="+json);
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
 		}
