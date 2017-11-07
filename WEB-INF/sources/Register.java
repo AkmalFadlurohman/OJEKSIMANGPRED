@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import com.google.gson.Gson;
 import com.ojeksimangpred.bean.User;
+import com.ojeksimangpred.bean.Driver;
 
 public class Register extends HttpServlet {
 	
@@ -19,6 +20,7 @@ public class Register extends HttpServlet {
 	throws ServletException,IOException {
 		
 		User user = new User();
+		Driver driver = new Driver(); 
 		AccessManager AM = new AccessManager();
 		String fullname = request.getParameter("fullname");
 		String username = request.getParameter("username");
@@ -35,21 +37,23 @@ public class Register extends HttpServlet {
 			status = "customer";
 		}
 		if (password.equals(cpassword) ) {
-			insertToDB(fullname,username,email,password,phone,status);
+			insertUserToDB(fullname,username,email,password,phone,status);
 			user = UserManager.fetchUser(username);
 			String token = AM.generateToken(username);
 			user.setToken(token);
 			Gson gson = new Gson();
 			String json = gson.toJson(user);
+			if (status.equals("driver")) {
+				insertDriverToDB(user.getId());
+			}
 			response.sendRedirect("../profile/profile.jsp?user="+json);
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
 		}
 	}
 	
-	public void insertToDB(String fullname, String username, String email, String password,String phone, String status) {
+	public void insertUserToDB(String fullname, String username, String email, String password,String phone, String status) {
 		Connection connect = null;
-		Statement statement = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
@@ -63,6 +67,31 @@ public class Register extends HttpServlet {
 		    		preparedStmt.setString(4, username);
 		    		preparedStmt.setString(5, password);
 		    		preparedStmt.setString(6, status);
+		    
+		    		preparedStmt.executeUpdate();
+		    
+				if (preparedStmt != null) {
+					connect.close();			
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	public void insertDriverToDB(int userID) {
+		Connection connect = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			if (connect != null) {
+				String query = "INSERT INTO driver (driver_id, total_score, votes)" + " VALUES (?, ?, ? )";
+				
+				PreparedStatement preparedStmt = connect.prepareStatement(query);
+		    		preparedStmt.setInt(1, userID);
+		    		preparedStmt.setInt(2, 0);
+		    		preparedStmt.setInt(3, 0);
 		    
 		    		preparedStmt.executeUpdate();
 		    

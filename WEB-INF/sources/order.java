@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Utility;
+package com.ojeksimangpred.bean;
 
 /**
  *
  * @author user
  */
-public class order {
+public class Order {
     int driverId;
     int customerId;
     int score;
@@ -24,61 +24,60 @@ public class order {
     public String toString() {
         return ("order [driverId=" + driverId + ", customerId=" + customerId + ", score=" + score + ", destLoc=" + destLoc + ", pickLoc=" + pickLoc +", date=" + date +", comment=" + comment +", customerVisibility=" + customerVisibility +", driverVisibility=" + driverVisibility + "]");
     }
-
-    int getDriverId(){
+    public int getDriverId(){
         return(driverId);
     }
-    int getCustomerId(){
+    public int getCustomerId(){
         return(customerId);
     }
-    int getScore(){
+    public int getScore(){
         return(score);
     }
-    String getDestLoc(){
+    public String getDestLoc(){
         return(destLoc);
     }
-    String getPickLoc(){
+    public String getPickLoc(){
         return(pickLoc);
     }   
-    java.sql.Date getDate(){
+    public java.sql.Date getDate(){
         return(date);
     }
-    String getComment(){
+    public String getComment(){
         return(comment);
     }
-    void setDriverId(int idX){
+    public void setDriverId(int idX){
         driverId = idX;
     }
-    void setCustomerId(int idY){
+    public void setCustomerId(int idY){
         customerId = idY;
     }
-    void setScore(int x){
+    public void setScore(int x){
         score = x;
     }
-    void setDestLoc(String locX){
+    public void setDestLoc(String locX){
         destLoc = locX;
     }
-    void setPickLoc(String locY){
+    public void setPickLoc(String locY){
         pickLoc = locY;
     }   
-    void setDate(java.sql.Date currDate){
+    public void setDate(java.sql.Date currDate){
         date = currDate;
     }
-    void setComment(String currComment){
+    public void setComment(String currComment){
         comment = currComment;
     }
-    void setCustomerVisibility(boolean x){
+    public void setCustomerVisibility(boolean x){
         customerVisibility = x;
     }
     
-    void setDriverVisibility(boolean y){
+    public void setDriverVisibility(boolean y){
         driverVisibility = y;
     }
     
-    boolean getCustomerVisibility(){
+    public boolean getCustomerVisibility(){
         return(customerVisibility);
     }
-    boolean getDriverVisibility(){
+    public boolean getDriverVisibility(){
         return(driverVisibility);
     }
 }

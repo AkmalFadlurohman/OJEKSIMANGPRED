@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Utility;
+package com.ojeksimangpred.bean;
 
 /**
  *
  * @author user
  */
-public class driver {
+public class Driver {
    int id;
    String[] location;
-   int jumlahOrder;
+   int totalVotes;
    int totalScore;
 
    int getId() {
@@ -20,38 +20,38 @@ public class driver {
    }
 
    public String toString() {
-    return ("driver [id=" + id + ", location=" + location + ", jumlahOrder=" + jumlahOrder + ", totalScore=" + totalScore + "]");
+    return ("driver [id=" + id + ", totalVotes=" + totalVotes + ", totalScore=" + totalScore + "]");
   }
 
-   String[] getLocation() {
+   public String[] getLocation() {
        return (location);
    }
 
-   float getRating() {
-       return (totalScore/jumlahOrder);
+   public float getRating() {
+       return (totalScore/totalVotes);
    }
    
-   float getVotes() {
-       return (jumlahOrder);
+   public float getVotes() {
+       return (totalVotes);
    }
    
-   int getTotalScore(){
-       return (jumlahOrder);
+   public int getTotalScore(){
+       return (totalVotes);
    }
    
-    void setId(int x) {
+   public void setId(int x) {
        id = x;
    }
 
-   void setLocation(String locationx) {
+   public void setLocation(String locationx) {
        location[location.length] = locationx;
    }
 
-   void setVotes(int x) {
-       jumlahOrder = x;
+   public void setVotes(int x) {
+       totalVotes = x;
    }
    
-   void setTotalScore(int y){
+   public void setTotalScore(int y){
        totalScore = y;
    }
 }

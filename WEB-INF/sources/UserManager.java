@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.*;
 import com.google.gson.Gson;
 import com.ojeksimangpred.bean.User;
+import com.ojeksimangpred.bean.Driver;
 
 public class UserManager extends HttpServlet {
 	
@@ -149,5 +150,30 @@ public class UserManager extends HttpServlet {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	public static Driver fetchDriver(int driverID) {
+		Driver driver = new Driver();
+		Connection connect = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			
+			statement = connect.createStatement();
+			resultSet = statement.executeQuery("select * from driver where driver_id='"+driverID+"'");
+			if (resultSet.next()) {
+				driver.setId(resultSet.getInt("driver_id"));
+				driver.setVotes(resultSet.getInt("total_score"));
+				driver.setTotalScore(resultSet.getInt("votes"));
+			}
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return driver;
 	}
 }

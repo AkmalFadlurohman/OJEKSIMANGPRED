@@ -3,25 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Utility;
+package com.ojeksimangpred.OjolServices;
 
 import static java.lang.System.out;
 import java.sql.*;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.ojeksimangpred.bean.User;
+import com.ojeksimangpred.bean.Driver;
+import com.ojeksimangpred.bean.Order;
 /**
  *
  * @author user
  */
-public class orderManager {
-    order currOrder;
+public class OrderManager {
+    private Order currOrder;
 
-    public orderManager() {
-        this.currOrder = new order();
+    public OrderManager() {
+        this.currOrder = new Order();
     }
 
-    void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, boolean driverVisibility, boolean customerVisibility){
+    public void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, boolean driverVisibility, boolean customerVisibility){
         currOrder.setDriverId(idDriver);
         currOrder.setCustomerId(idCustomer);
         currOrder.setScore(score);
@@ -35,7 +38,7 @@ public class orderManager {
         currOrder.setCustomerVisibility(customerVisibility);
     }
     
-    void insertToDatabase(){
+    public void insertToDatabase(){
         try
         {
           // create a mysql database connection
@@ -87,11 +90,11 @@ public class orderManager {
         }
     }
     
-    order getOrder(){
+    public Order getOrder(){
         return (currOrder);
     }
     
-    void hideOrder(int id, boolean isDriver){
+    public void hideOrder(int id, boolean isDriver){
         try
         {
           // create a mysql database connection
