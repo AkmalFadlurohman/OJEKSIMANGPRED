@@ -3,6 +3,6 @@
 	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
 	version="2.0">
 	<endpoint name="HelloWorld"
-			implementation="com.ojeksimangpred.ws.HelloWorldImpl"
+			implementation="com.ojeksimangpred.OjolServices.HelloWorldImpl"
 			url-pattern="/OjolServices/aloha" />
 </endpoints>

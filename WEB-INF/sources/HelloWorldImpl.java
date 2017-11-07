@@ -1,8 +1,8 @@
-package com.ojeksimangpred.ws;
+package com.ojeksimangpred.OjolServices;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "com.ojeksimangpred.ws.HelloWorld")
+@WebService(endpointInterface = "com.ojeksimangpred.OjolServices.HelloWorld")
 public class HelloWorldImpl implements HelloWorld {
 
 	@Override

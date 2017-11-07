@@ -22,42 +22,38 @@ public class UserManager extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException,IOException {
-		String json;
-		String newName;
-		String newPhone;
-		String newStatus;
+		String username = null;
+		String newName = null;
+		String newPhone = null;
+		String newStatus = "customer";
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		InputStream inputStream = null;
+		boolean isFileUploaded = false;
 		PrintWriter out = response.getWriter();
-		out.println(isMultipart);
+		
 		if (isMultipart) {
+			ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
 			try {
-				List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-				for (FileItem item : items) {
-					if (item.isFormField()) {
-						// Process regular form field (input type="text|radio|checkbox|etc", select, etc).
-						String fieldname = item.getFieldName();
-						String fieldvalue = item.getString();
-						if (fieldname.equals("newName")) {
-							newName = fieldvalue;
-							out.println(newName);
-						} else if (fieldname.equals("newPhone")) {
-							newPhone = fieldvalue;
-							out.println(newPhone);
-						} else if(fieldname.equals("newStatus")) {
-							if (fieldvalue != null) {
-								newStatus = "customer";
-							} else {
+				List<FileItem> fileItems = servletFileUpload.parseRequest(request);
+				for (FileItem fileItem : fileItems) {
+					if (fileItem.isFormField()) {
+						if (fileItem.getFieldName().equalsIgnoreCase("newName")) {
+							newName = fileItem.getString();
+						} else if (fileItem.getFieldName().equalsIgnoreCase("newPhone")) {
+							newPhone = fileItem.getString();
+						} else if(fileItem.getFieldName().equalsIgnoreCase("newStatus")) {
+							if (fileItem.getString().equalsIgnoreCase("on")) {
 								newStatus = "driver";
 							}
-							out.println(newStatus);
-						} else if(fieldname.equals("user")) {
-							json = fieldvalue;
-							out.println(json);
+						} else if(fileItem.getFieldName().equalsIgnoreCase("userName")) {
+							username = fileItem.getString();
 						}
 					} else {
-						String fieldname = item.getFieldName();
-						//String filename = FilenameUtils.getName(item.getName());
-						InputStream filecontent = item.getInputStream();
+						inputStream = fileItem.getInputStream();
+						String fileName = new File(fileItem.getName()).getName();
+						if (!"".equals(fileName)) {
+							isFileUploaded = true;
+						}
 					}
 				}
 			} catch(FileUploadException ex) {
@@ -69,47 +65,62 @@ public class UserManager extends HttpServlet {
 		Connection connect = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
-		PreparedStatement preparedStatement;
+		PreparedStatement preparedStatement = null;
 		
-		/*if (request.getParameter("newStatus") != null) {
-			newStatus = "driver";
-		} else {
-			newStatus = "customer";
-		}*/
-		
-		/*try {
+		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
 			
-			InputStream  inputStream = null; 
-			Part filePart = request.getPart("pictFile");
-			if (filePart != null && filePart.getSize() > 0) {
-				inputStream = filePart.getInputStream();
-				String query="UPDATE user set name= ? ,phone= ? ,status= ?,pict= ? WHERE id= ? ";
+			if (isFileUploaded) {
+				//out.println("Test1");
+				//out.println(newName);
+				//out.println(newPhone);
+				//out.println(newStatus);
+				String query="UPDATE user set name= ? ,phone= ? ,status= ?,pict= ? WHERE username= ? ";
 				preparedStatement = connect.prepareStatement(query);
 				preparedStatement.setString(1, newName);
 				preparedStatement.setString(2, newPhone);
 				preparedStatement.setString(3, newStatus);
 				preparedStatement.setBlob(4, inputStream);
-				preparedStatement.setInt(5, user.getId());
+				preparedStatement.setString(5, username);
+				int row = preparedStatement.executeUpdate();
+				if (row > 0) {
+					//out.println("Success");
+					connect.close();
+				}
+				/*if ((username != null) && (newName != null) && (newPhone != null)) {
+				}*/
 			} else {
-				//String query="UPDATE user set name='"+newName+"',phone='"+newPhone+"',status='"+newStatus+"' WHERE id='"+user.getId()+"'";
-				String query="UPDATE user set name= ? ,phone= ? ,status= ? WHERE id= ? ";
+				//out.println("Test2");
+				//out.println(newName);
+				//out.println(newPhone);
+				//out.println(newStatus);
+				String query="UPDATE user set name= ? ,phone= ? ,status= ? WHERE username= ? ";
 				preparedStatement = connect.prepareStatement(query);
 				preparedStatement.setString(1, newName);
 				preparedStatement.setString(2, newPhone);
 				preparedStatement.setString(3, newStatus);
-				preparedStatement.setInt(4,user.getId());
+				preparedStatement.setString(4,username);
+				int row = preparedStatement.executeUpdate();
+				if (row > 0) {
+					connect.close();
+				}	
+				/*if ((username != null) && (newName != null) && (newPhone != null)) {
+				}*/
 			}
-			int row = preparedStatement.executeUpdate();
-            if (row > 0) {
-                connect.close();
-            }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}*/
+		}
+		User user = new User();
+		AccessManager AM = new AccessManager();
+		String token = AM.generateToken(username);
+		user = UserManager.fetchUser(username);
+		user.setToken(token);
+		Gson gson = new Gson();
+		String json = gson.toJson(user);
+		response.sendRedirect("../profile/profile.jsp?user="+json);
 	}
 	public static User fetchUser(String username) {
 		User user = new User();

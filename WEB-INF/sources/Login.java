@@ -42,24 +42,9 @@ public class Login extends HttpServlet {
 			String token = AM.generateToken(username);
 			user = UserManager.fetchUser(username);
 			user.setToken(token);
-			
-			//Cookie accessToken = new Cookie("accessToken",token);
-			//Cookie uname = new Cookie("username",username);
-			//accessToken.setMaxAge(180);
-			//accessToken.setPath("/");
-			//uname.setMaxAge(-1);
-			//uname.setPath("/");
-			//response.addCookie(accessToken);
-			//response.addCookie(uname);
 			Gson gson = new Gson();
 			String json = gson.toJson(user);
-			//out.println(json);
 			response.sendRedirect("../profile/profile.jsp?user="+json);
-			//Path path = Paths.get("default_profile.jpeg");
-    	 		//byte[] defaultPict = Files.readAllBytes(path);
-    	 		//response.setContentType("image/jpeg");
-    	 		//response.setContentLength(defaultPict.length);
-    	 		//response.getOutputStream().write(defaultPict);
 		}  else {
 			out.print("Username or Password incorrect");
 			RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");

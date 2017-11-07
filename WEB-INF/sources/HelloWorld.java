@@ -1,4 +1,4 @@
-package com.ojeksimangpred.ws;
+package com.ojeksimangpred.OjolServices;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;

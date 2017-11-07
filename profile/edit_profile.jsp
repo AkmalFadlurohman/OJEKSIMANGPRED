@@ -60,15 +60,15 @@
                         </div>
                         <div style="height: 30px;">
                             <label class="switch" style="float: right;">
-                                <input type="checkbox" name="newStatus" id="current_stat" value="true">
+                                <input type="checkbox" name="newStatus" id="current_stat">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="edit_profile_nav">
-                    <a href='profile.jsp?user=<%out.println(json);%>'><div class="button red back" style="float: left; margin-left: 20px;">BACK</div></a>
-                    <input name="user" type="hidden" value="<%out.println(json);%>">
+                    <a href='profile.jsp?user='<%out.println(json);%>'><div class="button red back" style="float: left; margin-left: 20px;">BACK</div></a>
+                    <input  name="userName" type="hidden" value=<%out.println(user.getUsername());%>>
                     <input type="submit" value="SAVE" style="float: right;" class="button green save">
                 </div>
             </form>
