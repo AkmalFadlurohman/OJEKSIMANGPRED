@@ -21,7 +21,8 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import com.ojeksimangpred.OjolServices.LocationManagerInterface;
 import com.nimbusds.jwt.*;
-import com.ojeksimangpred.bean.User;
+import com.google.gson.Gson;
+import com.ojeksimangpred.bean.*;
 
 public class AccessManager extends HttpServlet {
 	
@@ -60,8 +61,6 @@ public class AccessManager extends HttpServlet {
 						String json = gson.toJson(user);
 						response.sendRedirect("../profile/profile.jsp?user="+json);
 					}
-					//out.println(cookie.getName());
-					//out.println(cookie.getValue());
 				} else {
 					response.sendRedirect("../login/login.html");
 				}	
@@ -74,20 +73,47 @@ public class AccessManager extends HttpServlet {
 	public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException,IOException {
 		String action = request.getParameter("action");
+		String username = request.getParameter("username");
+		User user = UserManager.fetchUser(username);
+		Gson gson = new Gson();
+		String uJson = gson.toJson(user);
+		Driver driver = UserManager.fetchDriver(user.getId());
+		String dJson = gson.toJson(driver);
 		PrintWriter out = response.getWriter();
 		if ("addLocation".equals(action)) {
 			URL url = new URL("	http://www.ojeksimangpred.com/OjolServices/LocationManager?wsdl");
 			
 			QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "LocationManagerService");
-		
+			
 			Service service = Service.create(url, qname);
-		
+			
 			LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
 			
 			int driverID = Integer.parseInt(request.getParameter("driverId"));
 			String newLoc = request.getParameter("new_location");
 			LM.addLocation(driverID,newLoc);
+			response.sendRedirect("../profile/edit_location.jsp?user="+uJson+"&driver="+dJson);
+			
+		} else if ("updateLocation".equals(action)) {
+			URL url = new URL("	http://www.ojeksimangpred.com/OjolServices/LocationManager?wsdl");
+			
+			QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "LocationManagerService");
+			
+			Service service = Service.create(url, qname);
+			
+			LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
+			
+			int driverID = Integer.parseInt(request.getParameter("driverId"));
+			String currentPrefloc = request.getParameter("current_prefloc");
+			String newPrefloc = request.getParameter("new_prefloc");
+			LM.editLocation(driverID,currentPrefloc,newPrefloc);
+			response.sendRedirect("../profile/edit_location.jsp?user="+uJson+"&driver="+dJson);
 		}
+		/*if (validateToken(user.getToken())) {
+		} else {
+			response.sendRedirect("../IDServices/Logout?user="+uJson);
+		}*/
+
 	}
 	
 	
@@ -127,12 +153,12 @@ public class AccessManager extends HttpServlet {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();;
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	boolean checkTokenExpiry(String token) {
+	boolean validateToken(String token) {
 		byte[] sharedSecret = new byte[64];
 		Connection connect = null;
 		ResultSet resultSet = null;

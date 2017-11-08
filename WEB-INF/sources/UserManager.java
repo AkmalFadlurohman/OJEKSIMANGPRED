@@ -115,8 +115,6 @@ public class UserManager extends HttpServlet {
 		} else {
 			response.sendRedirect("../profile/profile.jsp?user="+uJson);
 		}
-
-		response.sendRedirect("../profile/profile.jsp?user="+uJson);
 	}
 	public static User fetchUser(String username) {
 		User user = new User();
