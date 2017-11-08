@@ -145,6 +145,35 @@ public class UserManager extends HttpServlet {
 		}
 		return user;
 	}
+	public static User getUser(int userID) {
+		User user = new User();
+		Connection connect = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			
+			statement = connect.createStatement();
+			resultSet = statement.executeQuery("select * from user where id='"+userID+"'");
+			if (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				user.setFullname(resultSet.getString("name"));
+				user.setEmail(resultSet.getString("email"));
+				user.setPhone(resultSet.getString("phone"));
+				user.setUsername(resultSet.getString("username"));
+				user.setToken(resultSet.getString("token"));
+				user.setStatus(resultSet.getString("status"));
+			}
+			connect.close();
+		} catch (SQLException e) {
+			user.setFullname(e.getMessage());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 	public static Driver fetchDriver(int driverID) {
 		Driver driver = new Driver();
 		Connection connect = null;

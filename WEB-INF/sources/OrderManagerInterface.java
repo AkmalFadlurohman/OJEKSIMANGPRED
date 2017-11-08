@@ -13,12 +13,13 @@ import javax.jws.soap.SOAPBinding.Style;
 @SOAPBinding(style = Style.RPC)
 
 public interface OrderManagerInterface {
-        @WebMethod void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, boolean driverVisibility, boolean customerVisibility);
+        @WebMethod void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, String driverVisibility, String customerVisibility);
         @WebMethod void insertToDatabase();
         @WebMethod public Order getOrder();
         @WebMethod void hideOrder(int id, boolean isDriver);
         @WebMethod int[] getPreferedLocation (String location);
         @WebMethod int getLength();
-        @WebMethod Order[] getListOrderCustomer(int idDriver);
-        @WebMethod Order[] getListOrderDriver(int idDriver);
+        @WebMethod public Order getOrderI(int i);
+        @WebMethod void getListOrderCustomer(int idDriver);
+        @WebMethod void getListOrderDriver(int idDriver);
 }

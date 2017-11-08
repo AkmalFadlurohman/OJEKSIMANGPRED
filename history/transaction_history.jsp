@@ -1,5 +1,5 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.*,java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*,com.ojeksimangpred.OjolServices.OrderManagerInterface" %>
+<%@ page import="java.util.*,java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*,com.ojeksimangpred.OjolServices.OrderManagerInterface,com.ojeksimangpred.IDServices.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,17 +38,16 @@
         	</div>
     		<ul id="history_nav" class="nav_bar">
     			<li>
-    				<a class="history_menu menu_active" href=<?php echo 'transaction_history.php?id='.$user_id; ?>>
+    				<a class="history_menu menu_active" href='transaction_history.jsp?user=<% if (dJson == null)  {out.println(uJson);} else {out.println(uJson+"&driver="+dJson);}%>'>
 						<h3>MY PREVIOUS ORDER</h3>
-					</a>
+				</a>
     			</li>
     			<li>
-    				<a class="history_menu" href=<?php echo 'driver_history.php?id='.$user_id; ?>>
+    				<a class="history_menu" href='driver_history.jsp?user=<% if (dJson == null)  {out.println(uJson);} else {out.println(uJson+"&driver="+dJson);}%>'>
 						<h3>DRIVER HISTORY</h3>
-					</a>
+				</a>
     			</li>
     		</ul>
-
     		<div id="history_table_container">
 	    		<table class="history_table">
 					<colgroup>
@@ -63,53 +62,52 @@
 							QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "OrderManagerService");
 				
 							Service service = Service.create(url, qname);
-							OrderManagerInterface LM = service.getPort(OrderManagerInterface.class);
-							int size = getListOrderCustomer(user.getId());
-		                    if(size != 0)
-		                    {
-		                    		int i = 1;
-		                        	for (Order order : getListOrderCustomer(user.getId())) {
-                                    if (order.getCustomerVisibility.equals("visible")) {
+							OrderManagerInterface OM = service.getPort(OrderManagerInterface.class);
+							OM.getListOrderDriver(user.getId());
+							int size = OM.getLength();
+							//out.println(size);
+		                   	 if (size != 0)
+		                   	 {
+		                   	 	out.println(OM.getOrderI(0).getPickLoc());
+		                        	/*for (int i = 1; i<=size; i++ ) {
+		                        		Order order = new Order();
+		                        		order = OM.getOrderI(i-1);
+		                        		out.println("test");
+		                        		User d = new User();
+		                        		d = UserManager.getUser(order.getDriverId());
+                                    	if ("visible".equals(order.getCustomerVisibility())) {
                                         out.println("<script>var order_date = new Date('"+order.getDate()+"');</script>");
-                                        
-                                        echo
                                         out.println("<tr>");
                                         out.println("<td class='img_col'>");
-                                        out.println("<img class='history_pict'" + "<img class='history_pict'" + src='../IDServices/ImageRetriever?username=<% out.println(user.getUsername()); %>" onerror="this.src='../img/default_profile.jpeg'">
+                                        out.println("<img class='history_pict'" + "<img class='history_pict'" + "src='"+"../IDServices/ImageRetriever?username="+user.getUsername()+" onerror=this.src='../img/default_profile.jpeg'>");
                                         out.println("</td>");
                                         out.println("<td class='order_data'>");
-                                            out.println("<div class='left_data'>");
-                                            out.println("<p class='history_date' id="+i+"'></p>"
-                                            <script>
-                                                document.getElementById('row".$i."').innerHTML=format_date(order_date);
-                                            </script>
-                                            <p class='history_username'>".$driver_name."</p>
-                                            <p class='history_loc'>".$row['pick_city']." - ".$row['dest_city']."</p>
-                                            <p class='history_rating'>You rated: ";
-                                        
-                                            for ($i = 0; $i < $row['score']; $i++) {
-                                                echo "<span style='color:orange'>&starf;</span>";
-                                            }
-                                        
-                                        echo
-                                            "</p>
-                                            <p class='history_comment'>You commented:</p>
-                                            <p class='history_comment' style='margin-left: 30px;'>".$row['comment']."</p>
-                                            </div>
-                                            <div class'right_data'>
-                                                <form style='display: inline' action='hideHistory.php'>
-                                                    <input type='hidden' name='user_id' value='".$user_id."'>
-                                                    <input type='hidden' name='order_id' value='".$row['order_id']."'>
-													<input type='hidden' name='status' value='".$status."'>
-                                                    <input type='submit' class='hide_hist_button' value='HIDE'>
-                                                </form>
-                                            </div>
-                                        </td>
-                                        </tr>";
-                                        
-                                        $i++;
+                                            	out.println("<div class='left_data'>");
+                                            	out.println("<p class='history_date' id='row"+i+"'></p>");
+                                            	out.println("<script>document.getElementById('row"+i+"').innerHTML=format_date(order_date);</script>");
+                                            	out.println("<p class='history_username'>"+d.getFullname()+"</p>");
+                                            	out.println("<p class='history_loc'>"+order.getPickLoc()+" - "+order.getDestLoc()+"</p>");
+                                            	out.println("<p class='history_rating'>You rated: ");
+                                        		for (int j = 0; j < order.getScore(); j++) {
+                                                out.println("<span style='color:orange'>&starf;</span>");
+                                            	}
+                                            out.println("</p>");
+                                            out.println("<p class='history_comment'>You commented:</p>");
+                                            out.println("<p class='history_comment' style='margin-left: 30px;'>"+order.getComment()+"</p>");
+                                            out.println("</div>");
+                                            out.println("<div class'right_data'>");
+                                                out.println("<form style='display: inline' action='hideHistory.php'>");
+                                                    	out.println("<input type='hidden' name='user_id' value='"+user.getId()+"'>");
+                                                    	out.println("<input type='hidden' name='order_id' value='"+order.getOrderId()+"'>");
+													out.println("<input type='hidden' name='status' value='"+d.getStatus()+"'>");
+                                                    out.println("<input type='submit' class='hide_hist_button' value='HIDE'>");
+                                                out.println("</form>");
+                                            out.println("</div>");
+                                        out.println("</td>");
+                                        out.println("</tr>");
+                                       i++;
                                     }
-		                        }
+		                        }*/
 		                    }
 		                %>
 					</tbody>

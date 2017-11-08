@@ -36,7 +36,7 @@ public class OrderManager implements OrderManagerInterface {
     }
 
     @Override
-    public void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, boolean driverVisibility, boolean customerVisibility){
+    public void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, String driverVisibility, String customerVisibility){
         currOrder.setDriverId(idDriver);
         currOrder.setCustomerId(idCustomer);
         currOrder.setScore(score);
@@ -92,8 +92,8 @@ public class OrderManager implements OrderManagerInterface {
                 preparedStmt.setInt       (6, currOrder.getDriverId());
                 preparedStmt.setInt       (7, currOrder.getCustomerId());
                 preparedStmt.setDate      (8, currOrder.getDate());
-                preparedStmt.setBoolean   (9, currOrder.getCustomerVisibility());
-                preparedStmt.setBoolean   (10, currOrder.getDriverVisibility());
+                preparedStmt.setString   (9, currOrder.getCustomerVisibility());
+                preparedStmt.setString   (10, currOrder.getDriverVisibility());
                 preparedStmt.execute();
             } catch (Exception e){
             }
@@ -122,9 +122,9 @@ public class OrderManager implements OrderManagerInterface {
                 // the mysql insert statement
                 String query;
                 if (isDriver) {
-                    query = " update `order` set driver_visibility = false where id = " + id;
+                    query = " update `order` set driver_visibility = none where id = " + id;
                 } else {  
-                    query = " update `order` set customer_visibility = false where id = " + id;
+                    query = " update `order` set customer_visibility = none where id = " + id;
                 }
                 
                 Statement st = conn.createStatement();
@@ -139,7 +139,7 @@ public class OrderManager implements OrderManagerInterface {
     }
     
     @Override
-    public Order[] getListOrderDriver(int idDriver){ 
+    public void getListOrderDriver(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -160,7 +160,7 @@ public class OrderManager implements OrderManagerInterface {
               while (rs.next() && length < 100)
               {
                 // order_id, dest_city, pick_city, score, comment, driver_id, cust_id, date, customer_visibility, driver_visibility
-                arrayOrder[this.length].setOrderId(rs.getInt("order_id"));
+                /*arrayOrder[this.length].setOrderId(rs.getInt("order_id"));
                 arrayOrder[this.length].setDriverId(rs.getInt("driver_id"));
                 arrayOrder[this.length].setCustomerId(rs.getInt("cust_id"));
                 arrayOrder[this.length].setScore(rs.getInt("score"));
@@ -168,9 +168,29 @@ public class OrderManager implements OrderManagerInterface {
                 arrayOrder[this.length].setPickLoc(rs.getString("pick_city"));
                 arrayOrder[this.length].setDate(rs.getDate("date"));
                 arrayOrder[this.length].setComment(rs.getString("comment"));
-                arrayOrder[this.length].setCustomerVisibility(rs.getBoolean("customer_visibility"));
-                arrayOrder[this.length].setDriverVisibility(rs.getBoolean("driver_visibility"));
-                this.length++;
+                arrayOrder[this.length].setCustomerVisibility(rs.getString("customer_visibility"));
+                arrayOrder[this.length].setDriverVisibility(rs.getString("driver_visibility"));
+                this.length++;*/
+            	  	int i = rs.getInt("order_id");
+                  int j = rs.getInt("driver_id");
+                  int k = rs.getInt("cust_id");
+                  int l = rs.getInt("score");
+                  String m = rs.getString("dest_pick");
+                  String n = rs.getString("pick_city");
+                  String o = rs.getString("comment");
+                  String p = rs.getString("customer_visibility");
+                  String q = rs.getString("driver_visibility");
+                  arrayOrder[this.length].setOrderId(i);
+                  arrayOrder[this.length].setDriverId(j);
+                  arrayOrder[this.length].setCustomerId(k);
+                  arrayOrder[this.length].setScore(l);
+                  arrayOrder[this.length].setDestLoc(m);
+                  arrayOrder[this.length].setPickLoc(n);
+                  arrayOrder[this.length].setDate(rs.getDate("date"));
+                  arrayOrder[this.length].setComment(o);
+                  arrayOrder[this.length].setCustomerVisibility(p);
+                  arrayOrder[this.length].setDriverVisibility(q);
+                  this.length++;
               }
               st.close();
             } catch (Exception e) {
@@ -179,11 +199,10 @@ public class OrderManager implements OrderManagerInterface {
       } catch (Exception e){
           
       }
-      return(arrayOrder);
     }
     
     @Override
-    public Order[] getListOrderCustomer(int idDriver){ 
+    public void getListOrderCustomer(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -212,8 +231,8 @@ public class OrderManager implements OrderManagerInterface {
                 arrayOrder[this.length].setPickLoc(rs.getString("pick_city"));
                 arrayOrder[this.length].setDate(rs.getDate("date"));
                 arrayOrder[this.length].setComment(rs.getString("comment"));
-                arrayOrder[this.length].setCustomerVisibility(rs.getBoolean("customer_visibility"));
-                arrayOrder[this.length].setDriverVisibility(rs.getBoolean("driver_visibility"));
+                arrayOrder[this.length].setCustomerVisibility(rs.getString("customer_visibility"));
+                arrayOrder[this.length].setDriverVisibility(rs.getString("driver_visibility"));
                 this.length++;
               }
               st.close();
@@ -223,12 +242,16 @@ public class OrderManager implements OrderManagerInterface {
       } catch (Exception e){
           
       }
-      return(arrayOrder);
     }
 
     @Override
     public int getLength(){
       return(length);
+    }
+    
+    @Override
+    public Order getOrderI(int i){
+      return(arrayOrder[i]);
     }
 
     @Override
