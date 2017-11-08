@@ -102,8 +102,8 @@ public class Login extends HttpServlet {
 			}
 		}  else {
 			//out.print("Username or Password incorrect");
-			request.setAttribute("errorMessage", "UserName atau password ada yang salah");
-			RequestDispatcher rs = request.getRequestDispatcher("/login/login.html").forward(request, response);
+			request.setAttribute("errorMessage", "Invalid Username or Password");
+			request.getRequestDispatcher("../login/login.jsp").forward(request, response);
 	    }
 	}
 	
