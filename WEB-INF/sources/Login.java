@@ -47,7 +47,7 @@ public class Login extends HttpServlet {
 			user = UserManager.fetchUser(username);
 			Gson gson = new Gson();
 			String uJson = gson.toJson(user);
-			if (user.getStatus().equals("driver")) {
+			if ("driver".equals(user.getStatus())) {
 				driver = UserManager.fetchDriver(user.getId());
 				String dJson = gson.toJson(driver);
 				response.sendRedirect("../profile/profile.jsp?user="+uJson+"&driver="+dJson);

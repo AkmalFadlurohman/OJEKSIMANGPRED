@@ -24,6 +24,11 @@ Inc.//DTD Web Application 2.3//EN"
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>com.ojeksimangpred.IDServices.Logout</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>AccessManager</servlet-name>
 		<servlet-class>com.ojeksimangpred.IDServices.AccessManager</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -66,6 +71,10 @@ Inc.//DTD Web Application 2.3//EN"
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/IDServices/Login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/IDServices/Logout</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Register</servlet-name>
