@@ -10,6 +10,7 @@ package com.ojeksimangpred.bean;
  * @author user
  */
 public class Order {
+    int orderId;
     int driverId;
     int customerId;
     int score;
@@ -23,6 +24,9 @@ public class Order {
     @Override
     public String toString() {
         return ("order [driverId=" + driverId + ", customerId=" + customerId + ", score=" + score + ", destLoc=" + destLoc + ", pickLoc=" + pickLoc +", date=" + date +", comment=" + comment +", customerVisibility=" + customerVisibility +", driverVisibility=" + driverVisibility + "]");
+    }
+    public int getOrderId(){
+        return(orderId);
     }
     public int getDriverId(){
         return(driverId);
@@ -44,6 +48,9 @@ public class Order {
     }
     public String getComment(){
         return(comment);
+    }
+    public void setOrderId(int idZ){
+        orderId = idZ;
     }
     public void setDriverId(int idX){
         driverId = idX;
