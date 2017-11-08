@@ -14,11 +14,12 @@ import com.ojeksimangpred.bean.Driver;
 import com.ojeksimangpred.bean.Order;
 import java.util.ArrayList;
 import java.util.List;
+import javax.jws.WebService;
 /**
  *
  * @author user
  */
-public class OrderManager {
+public class OrderManager implements OrderManagerInterface {
     private Order currOrder;
     private Order[] arrayOrder; 
     private int length = 0;
