@@ -102,8 +102,8 @@ public class Login extends HttpServlet {
 			}
 		}  else {
 			//out.print("Username or Password incorrect");
-			//RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");
-			//rs.include(request, response);
+			request.setAttribute("errorMessage", "UserName atau password ada yang salah");
+			RequestDispatcher rs = request.getRequestDispatcher("/login/login.html").forward(request, response);
 	    }
 	}
 	
