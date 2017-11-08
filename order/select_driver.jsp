@@ -24,10 +24,10 @@
 
     			OrderManagerInterface OM = service.getPort(OrderManagerInterface.class);
 				%>
-				
+
 		</div>
 		<div class="menu_container">
-			<?php include'../template/menu.php';?>
+			<% include'../template/menu.jsp';%>
 		</div>
 		<script>
         	document.getElementById("order_link").setAttribute("class", "menu menu_active");
