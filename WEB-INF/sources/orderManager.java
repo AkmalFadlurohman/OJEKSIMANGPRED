@@ -19,6 +19,7 @@ import javax.jws.WebService;
  *
  * @author user
  */
+@WebService(endpointInterface = "com.ojeksimangpred.OjolServices.OrderManagerInterface")
 public class OrderManager implements OrderManagerInterface {
     private Order currOrder;
     private Order[] arrayOrder; 
@@ -48,6 +49,7 @@ public class OrderManager implements OrderManagerInterface {
         currOrder.setCustomerVisibility(customerVisibility);
     }
     
+    @Override    
     public void insertToDatabase(){
         try
         {
@@ -104,6 +106,7 @@ public class OrderManager implements OrderManagerInterface {
         return (currOrder);
     }
     
+    @Override
     public void hideOrder(int id, boolean isDriver){
         try
         {
