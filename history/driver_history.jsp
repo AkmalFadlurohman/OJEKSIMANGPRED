@@ -1,54 +1,52 @@
-<!DOCTYPE html>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*,java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*,com.ojeksimangpred.OjolServices.LocationManagerInterface" %>
 <html>
 <head>
-	<title>Driver History</title>
-	<link rel="stylesheet" type="text/css" href="../css/default_style.css">
+    <title>Driver History</title>
+    <link rel="stylesheet" type="text/css" href="../css/default_style.css">
     <link rel="stylesheet" type="text/css" href="../css/history.css">
     <link rel="stylesheet" type="text/css" href="../css/header.css">
     
     <script type="text/javascript" src="format_date.js"></script>
 </head>
 <body>
-	<div class="frame">
-		<div class="header">
-			<?php
-                $user_id = $_GET['id'];
-                include '../database/dbconnect.php';
-                
-                $query=mysqli_query($con,"SELECT * FROM user WHERE user_id='".$user_id."'") or die(mysqli_error());
-                
-                if(mysqli_num_rows($query)!=0)
-                {
-                    $row=mysqli_fetch_assoc($query);
-                    $username = $row['username'];
-					$status= $row['status'];
-                    include("../template/header.php");
+    <div class="frame">
+        <div class="header">
+            <%  
+                String uJson = request.getParameter("user");
+                User user = new Gson().fromJson(uJson,User.class);
+                String dJson = null;
+                Driver driver = new Driver();
+                if (user.getStatus().equals("driver")) {
+                    dJson = request.getParameter("driver");
+                    driver = new Gson().fromJson(dJson,Driver.class);
                 }
-            ?>
-		</div>
-		<div class="menu_container">
-            <?php include'../template/menu.php';?>
+            %>
+            <%@include file="../template/header.jsp"%>
+        </div>
+        <div class="menu_container">
+            <%@include file="../template/menu.jsp"%>
             <script type="text/javascript">
                 document.getElementById("history_link").setAttribute("class", "menu menu_active");
             </script>
         </div>
         <div class="history_container">
-        	<div class="subheader">
-        		<div class="title"><h1>Transaction History</h1></div>
-        	</div>
+            <div class="subheader">
+                <div class="title"><h1>Transaction History</h1></div>
+            </div>
 
-    		<ul class="nav_bar" id="history_nav">
-    			<li>
-    				<a class="history_menu" href=<?php echo 'transaction_history.php?id='.$user_id; ?>>
-						<h3>MY PREVIOUS ORDER</h3>
-					</a>
-    			</li>
-    			<li>
-    				<a class="history_menu menu_active" href=<?php echo 'driver_history.php?id='.$user_id; ?>>
-						<h3>DRIVER HISTORY</h3>
-					</a>
-    			</li>
-    		</ul>
+            <ul class="nav_bar" id="history_nav">
+                <li>
+                    <a class="history_menu" href=<%out.print("'transaction_history.jsp?id=" + user_id + "'"); %> >
+                        <h3>MY PREVIOUS ORDER</h3>
+                    </a>
+                </li>
+                <li>
+                    <a class="history_menu menu_active" href=<%out.print("'driver_history.jsp?id=" + user_id + "'"); %> >
+                        <h3>DRIVER HISTORY</h3>
+                    </a>
+                </li>
+            </ul>
             
             <div id="history_table_container">
                 <table class="history_table">
@@ -97,7 +95,7 @@
                                             <div class'right_data'>
                                             <form style='display: inline' method='get' action='hideHistory.php'>
                                             <input type='hidden' name='user_id' value='".$user_id."'>
-											<input type='hidden' name='status' value='".$status."'>
+                                            <input type='hidden' name='status' value='".$status."'>
                                             <input type='hidden' name='order_id' value='".$row['order_id']."'>
                                             <input type='submit' class='hide_hist_button' value='HIDE'>
                                             </form>
@@ -115,7 +113,7 @@
                 </table>
             </div>
         </div>
-	</div>
+    </div>
     <script type="text/javascript" src="hide_history.js"></script>
 </body>
 </html>
