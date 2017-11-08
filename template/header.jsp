@@ -4,5 +4,5 @@
  </div>
  <div class='greeting'>
  	<p>Hello,  "<% out.println(user.getUsername()); %>"!</p>
- 	<p style="margin: 0;"><a href='../login/login.html'>Logout </a></p>
+ 	<p style="margin: 0;"><a href='../IDServices/Logout?user=<%out.println(uJson);%>'>Logout </a></p>
  </div>
