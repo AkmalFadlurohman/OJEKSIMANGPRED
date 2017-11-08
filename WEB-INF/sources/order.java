@@ -18,8 +18,8 @@ public class Order {
     String pickLoc;   
     java.sql.Date date;
     String comment;
-    boolean customerVisibility;
-    boolean driverVisibility;
+    String customerVisibility;
+    String driverVisibility;
     
     @Override
     public String toString() {
@@ -73,18 +73,18 @@ public class Order {
     public void setComment(String currComment){
         comment = currComment;
     }
-    public void setCustomerVisibility(boolean x){
-        customerVisibility = x;
+    public void setCustomerVisibility(String v){
+        customerVisibility = v;
     }
     
-    public void setDriverVisibility(boolean y){
-        driverVisibility = y;
+    public void setDriverVisibility(String v){
+        driverVisibility = v;
     }
     
-    public boolean getCustomerVisibility(){
-        return(customerVisibility);
+    public String getCustomerVisibility(){
+        return (customerVisibility);
     }
-    public boolean getDriverVisibility(){
-        return(driverVisibility);
+    public String getDriverVisibility(){
+        return (driverVisibility);
     }
 }
