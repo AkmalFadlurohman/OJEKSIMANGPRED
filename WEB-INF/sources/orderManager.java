@@ -251,7 +251,7 @@ public class OrderManager implements OrderManagerInterface {
               driverId[idx] = rs.getInt("driver_id");
               idx++;
             }
-            driverId[0] = idx;
+            driverId[0] = idx-1;
             st.close();
           } catch (Exception e) {
 
