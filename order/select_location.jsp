@@ -57,12 +57,13 @@
 			</div>
 
 
-			<form method="post" id="submit_select_loc" name="submit_select_loc" action=
-			<% 
+			<!-- <% 
 				out.print("select_driver.jsp?user=");
 				out.print(json);
-			%> 
-				onsubmit="">
+				
+			%>  -->
+
+			<form method="post" id="submit_select_loc" name="submit_select_loc" action="select_driver.jsp?user="+<%=json %>>
 				<div class="content" id="select_destination">
 					<div>
 						<span class="loc_form_label">Picking point</span>
