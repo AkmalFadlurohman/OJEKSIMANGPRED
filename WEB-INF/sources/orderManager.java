@@ -35,6 +35,7 @@ public class OrderManager implements OrderManagerInterface {
         }
     }
 
+    @Override
     public void setOrder(int idDriver, int idCustomer, int score, String destLoc, String pickLoc, String currComment, boolean driverVisibility, boolean customerVisibility){
         currOrder.setDriverId(idDriver);
         currOrder.setCustomerId(idCustomer);
@@ -102,6 +103,7 @@ public class OrderManager implements OrderManagerInterface {
         }
     }
     
+    @Override
     public Order getOrder(){
         return (currOrder);
     }
@@ -136,7 +138,8 @@ public class OrderManager implements OrderManagerInterface {
         }
     }
     
-    Order[] getListOrderDriver(int idDriver){ 
+    @Override
+    public Order[] getListOrderDriver(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -178,8 +181,9 @@ public class OrderManager implements OrderManagerInterface {
       }
       return(arrayOrder);
     }
-
-    Order[] getListOrderCustomer(int idDriver){ 
+    
+    @Override
+    public Order[] getListOrderCustomer(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -222,11 +226,13 @@ public class OrderManager implements OrderManagerInterface {
       return(arrayOrder);
     }
 
-    int getLength(){
+    @Override
+    public int getLength(){
       return(length);
     }
 
-    int[] getPreferedLocation (String location){
+    @Override
+    public int[] getPreferedLocation (String location){
       int[] driverId = new int[100];
       try {
       String myDriver = "com.mysql.jdbc.Driver";
