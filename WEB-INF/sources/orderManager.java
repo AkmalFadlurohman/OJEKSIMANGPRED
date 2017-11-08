@@ -13,11 +13,13 @@ import java.util.Date;
 import com.ojeksimangpred.bean.User;
 import com.ojeksimangpred.bean.Driver;
 import com.ojeksimangpred.bean.Order;
+import javax.jws.WebService;
 /**
  *
  * @author user
  */
-public class OrderManager {
+@WebService (endpointInterface = "com.ojeksimangpred.OjolServices.OrderManagerInterface")
+public class OrderManager implements OrderManagerInterface {
     private Order currOrder;
 
     public OrderManager() {
@@ -38,6 +40,7 @@ public class OrderManager {
         currOrder.setCustomerVisibility(customerVisibility);
     }
     
+    @Override
     public void insertToDatabase(){
         try
         {
@@ -94,6 +97,7 @@ public class OrderManager {
         return (currOrder);
     }
     
+    @Override
     public void hideOrder(int id, boolean isDriver){
         try
         {

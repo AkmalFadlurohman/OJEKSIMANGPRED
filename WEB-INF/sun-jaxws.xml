@@ -8,4 +8,7 @@
 	<endpoint name="LocationManager"
 			implementation="com.ojeksimangpred.OjolServices.LocationManager"
 			url-pattern="/OjolServices/LocationManager" />
+	<endpoint name="OrderManager"
+			implementation="com.ojeksimangpred.OjolServices.OrderManager"
+			url-pattern="/OjolServices/OrderManager" />
 </endpoints>

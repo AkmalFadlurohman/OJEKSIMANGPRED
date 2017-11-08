@@ -52,6 +52,13 @@ Inc.//DTD Web Application 2.3//EN"
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>OjolServices/OrderManager</servlet-name>
+		<servlet-class>
+			com.sun.xml.ws.transport.http.servlet.WSServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Hello</servlet-name>
 		<url-pattern>/IDServices/Hello</url-pattern>
@@ -83,6 +90,10 @@ Inc.//DTD Web Application 2.3//EN"
 	<servlet-mapping>
 		<servlet-name>OjolServices/LocationManager</servlet-name>
 		<url-pattern>/OjolServices/LocationManager</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>OjolServices/OrderManager</servlet-name>
+		<url-pattern>/OjolServices/OrderManager</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
