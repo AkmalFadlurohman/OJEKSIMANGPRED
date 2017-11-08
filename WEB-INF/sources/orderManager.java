@@ -225,4 +225,41 @@ public class OrderManager implements OrderManagerInterface {
     int getLength(){
       return(length);
     }
+
+    int[] getPreferedLocation (String location){
+      int[] driverId = new int[100];
+      try {
+      String myDriver = "com.mysql.jdbc.Driver";
+      String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
+      Class.forName(myDriver);
+        // create a sql date object so we can use it in our INSERT statement
+        try (Connection conn = DriverManager.getConnection(myUrl, "root", "")) {
+            // create a sql date object so we can use it in our INSERT statement
+            String query = "SELECT * FROM `driver_prefloc` where pref_loc = " + location;
+            // create the java statement
+            Statement st = conn.createStatement();
+            
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+            
+            // iterate through the java resultset
+            int idx = 1;
+            // Order tempOrder = new Order();
+            while (rs.next() && length < 100)
+            {
+              // order_id, dest_city, pick_city, score, comment, driver_id, cust_id, date, customer_visibility, driver_visibility
+              driverId[idx] = rs.getInt("driver_id");
+              idx++;
+            }
+            driverId[0] = idx;
+            st.close();
+          } catch (Exception e) {
+
+          }    
+        } catch (Exception e) {
+
+        }
+      return(driverId);
+    }
+
 }
