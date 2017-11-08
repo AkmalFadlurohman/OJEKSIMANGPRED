@@ -103,8 +103,7 @@
                                             </td>
                                             </tr>";
                                     }
-
-                                        $i++;
+                                    $i++;
                                 }
                             }
                             mysqli_close($con);

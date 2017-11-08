@@ -139,7 +139,7 @@ public class OrderManager implements OrderManagerInterface {
     }
     
     @Override
-    public Order[] getListOrderDriver(int idDriver){ 
+    public void getListOrderDriver(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -179,11 +179,10 @@ public class OrderManager implements OrderManagerInterface {
       } catch (Exception e){
           
       }
-      return(arrayOrder);
     }
     
     @Override
-    public Order[] getListOrderCustomer(int idDriver){ 
+    public void getListOrderCustomer(int idDriver){ 
       try {    
         String myDriver = "com.mysql.jdbc.Driver";
         String myUrl = "jdbc:mysql://localhost:3306/ojeksimangpred_ojolservices";
@@ -223,12 +222,16 @@ public class OrderManager implements OrderManagerInterface {
       } catch (Exception e){
           
       }
-      return(arrayOrder);
     }
 
     @Override
     public int getLength(){
       return(length);
+    }
+    
+    @Override
+    public Order getOrderI(int i){
+      return(arrayOrder[i]);
     }
 
     @Override
