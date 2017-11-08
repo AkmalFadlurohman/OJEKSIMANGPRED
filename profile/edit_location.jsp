@@ -109,11 +109,12 @@
                                 out.println("<div class='edit_operation'>");
                                     out.println("<div class='edit_button' id='edit_prefloc"+(i+1)+"' onClick=\"showEdit('edit_prefloc"+(i+1)+"','save_prefloc"+(i+1)+"','prefloc"+(i+1)+"','dummy_prefloc"+(i+1)+"','current_prefloc"+(i+1)+"','form_prefloc"+(i+1)+"','delete_prefloc"+(i+1)+"','cancel_edit"+(i+1)+"');\">✎</div>");
                                     out.println("<div id='save_prefloc"+(i+1)+"' style='display: none'>");
-                                        out.println("<form name='edit_prefloc_form' method='POST' action='updateLocation.php' style='display: inline;' onsubmit=\"return validateAddLoc('dummy_prefloc"+(i+1)+"');\">");
+                                        out.println("<form name='edit_prefloc_form' method='POST' action='../IDServices/AccessManager' style='display: inline;' onsubmit=\"return validateAddLoc('dummy_prefloc"+(i+1)+"');\">");
                                             out.println("<input class='save_button' type='submit' value='Save'>");
                                             out.println("<input type='hidden' name='current_prefloc' id='current_prefloc"+(i+1)+"'>");
                                             out.println("<input type='hidden' name='new_prefloc' id='new_prefloc"+(i+1)+"'>");
                                             out.println("<input type='hidden' name='username' value='"+user.getUsername()+"'>");
+                                            out.println("<input type='hidden' name='action' value='updateLocation'>");
                                         out.println("</form>");
                                     out.println("</div>");
                                     out.println("<div class='delete_button' id='delete_prefloc"+(i+1)+"'>✖</div>");

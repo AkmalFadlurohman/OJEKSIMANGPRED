@@ -27,8 +27,6 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
 import com.ojeksimangpred.bean.*;
-import com.ojeksimangpred.OjolServices.LocationManagerInterface;
-
 
 
 
