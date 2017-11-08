@@ -73,17 +73,20 @@
     						LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
             				if (dJson != null) {
             					int size = LM.retrieveLocation(driver.getId()).length;
+            					int bound = size;
+            					if (bound >= 3) {
+            						bound = 3;
+            					}
             					StringBuilder builder = new StringBuilder();
             					builder.append("<ul>");
-            					for (int i=0;i<=4;i++) {
-            						if (i != size-1) {
+            					for (int i=0;i<bound;i++) {
+            						if (i != bound-1) {
             							builder.append("<li>►"+LM.retrieveLocation(driver.getId())[i]+"</li><ul>");
-            							i++;
             						} else {	
             							builder.append("<li>►"+LM.retrieveLocation(driver.getId())[i]+"</li>");
             						}
             					}
-            					for (int i=0;i<=4;i++) {
+            					for (int i=0;i<=bound;i++) {
             						builder.append("</ul>");
             					}
             					out.println(builder.toString());
