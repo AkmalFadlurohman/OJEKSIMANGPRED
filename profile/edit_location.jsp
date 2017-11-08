@@ -118,13 +118,13 @@
                                             out.println("<input type='hidden' name='action' value='updateLocation'>");
                                         out.println("</form>");
                                     out.println("</div>");
-                                    out.println("<div class='delete_button' id='delete_prefloc"+(i+1)+"'>");
+                                    out.println("<div class='delete_container' id='delete_prefloc"+(i+1)+"'>");
                                     		out.println("<form name='delete_prefloc_form' method='POST' action='../IDServices/AccessManager' style='display: inline;'>");
                                     		out.println("<input type='hidden' name='username' value='"+user.getUsername()+"'>");
                                     		out.println("<input type='hidden' name='driverId' value='"+driver.getId()+"'>");
                                     		out.println("<input type='hidden' name='delPrefLoc' value='"+locations[i]+"'>");
                                     		out.println("<input type='hidden' name='action' value='deleteLocation'>");
-                                    		out.println("<input type='submit' value='✖'>");
+                                    		out.println("<input class='delete_button' type='submit' value='✖'>");
                                     out.println("</div>");
                                     out.println("<div class='cancel_button' id='cancel_edit"+(i+1)+"' style='display: none;' onClick=\"hideEdit('edit_prefloc"+(i+1)+"','save_prefloc"+(i+1)+"','prefloc"+(i+1)+"','form_prefloc"+(i+1)+"','delete_prefloc"+(i+1)+"','cancel_edit"+(i+1)+"');\">Cancel</div>");
                                 out.println("</div>");

@@ -108,6 +108,19 @@ public class AccessManager extends HttpServlet {
 			String newPrefloc = request.getParameter("new_prefloc");
 			LM.editLocation(driverID,currentPrefloc,newPrefloc);
 			response.sendRedirect("../profile/edit_location.jsp?user="+uJson+"&driver="+dJson);
+		} else if ("deleteLocation".equals(action)) {
+			URL url = new URL("	http://www.ojeksimangpred.com/OjolServices/LocationManager?wsdl");
+			
+			QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "LocationManagerService");
+			
+			Service service = Service.create(url, qname);
+			
+			LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
+			
+			int driverID = Integer.parseInt(request.getParameter("driverId"));
+			String delPrefloc = request.getParameter("delPrefLoc");
+			LM.delLocation(driverID,delPrefloc);
+			response.sendRedirect("../profile/edit_location.jsp?user="+uJson+"&driver="+dJson);
 		}
 		/*if (validateToken(user.getToken())) {
 		} else {
