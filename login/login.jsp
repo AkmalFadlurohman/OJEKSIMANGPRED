@@ -5,19 +5,17 @@
         <link rel="stylesheet" type="text/css" href="../css/login.css">
     </head>
     <body>
+        <%! String s1 = ""; %>
+            <% s1  = (String) request.getAttribute("errorMessage");%>
+            <% if(s1.equals("UserName atau password ada yang salah")){ %>
+            <p  style="color : red">UserName or password wrong</p>
+        <% } %>
         <div class="frame">
             <div class="login_header">
                 <div class="horizontal_line"></div>
                 <h1>LOGIN</h1>
                 <div class="horizontal_line"></div>
             </div>
-                <!-- pesankesalahan -->
-                <%! String s1 = ""; %>
-                <% s1  = (String) request.getAttribute("errorMessage");%>
-                <% if(s1.equals("UserName atau password ada yang salah")){ %>
-                <div class="besideemailbox" style="color : red">UserName or password wrong</div>
-                <% } %>
-                <!-- end of pesan kesalahan -->
             <p id="error_credential" style="text-align: center;"></p>
             <form name="login" method="POST" action="../IDServices/Login">
                 <div class="login_container">
