@@ -59,8 +59,8 @@
 
 			<form method="post" id="submit_select_loc" name="submit_select_loc" action=
 			<% 
-				out.println("select_driver.jsp?user=");
-				
+				out.print("select_driver.jsp?user=");
+				out.print(json);
 			%> 
 				onsubmit="">
 				<div class="content" id="select_destination">

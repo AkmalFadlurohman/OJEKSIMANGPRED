@@ -14,11 +14,13 @@ import com.ojeksimangpred.bean.Driver;
 import com.ojeksimangpred.bean.Order;
 import java.util.ArrayList;
 import java.util.List;
+import javax.jws.WebService;
 /**
  *
  * @author user
  */
-public class OrderManager {
+@WebService(endpointInterface = "com.ojeksimangpred.OjolServices.OrderManagerInterface")
+public class OrderManager implements OrderManagerInterface {
     private Order currOrder;
     private Order[] arrayOrder; 
     private int length = 0;
@@ -47,6 +49,7 @@ public class OrderManager {
         currOrder.setCustomerVisibility(customerVisibility);
     }
     
+    @Override    
     public void insertToDatabase(){
         try
         {
@@ -103,6 +106,7 @@ public class OrderManager {
         return (currOrder);
     }
     
+    @Override
     public void hideOrder(int id, boolean isDriver){
         try
         {
