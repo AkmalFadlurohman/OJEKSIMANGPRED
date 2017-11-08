@@ -42,11 +42,57 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		PrintWriter out = response.getWriter();
+		
+		/*SecureRandom random = new SecureRandom();
+		byte[] sharedSecret = new byte[64];
+		random.nextBytes(sharedSecret);
+		
+		String token = null;
+		try {
+			JWSSigner signer = new MACSigner(sharedSecret);
+			JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+			.subject(username)
+			.issuer("ojeksimangpred.com")
+			.expirationTime(new Date(new Date().getTime() + 3600 * 1000))
+			.build();
+			
+			SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS512), claimsSet);
+			signedJWT.sign(signer);
+			token = signedJWT.serialize();
+		} catch(KeyLengthException e ) {
+			e.printStackTrace();
+		} catch(JOSEException e) {
+			e.printStackTrace();
+		}
+		Connection connect = null;
+		Statement statement = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			if (connect != null) {
+				statement = connect.createStatement();
+		    		statement.executeUpdate("UPDATE user SET token = '"+token+"',secret = '"+ sharedSecret.toString() +"' WHERE username = '"+username+"'");
+		    
+				if (statement != null) {
+					connect.close();			
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		out.println(token);
+		out.println("UPDATE user SET token = '"+token+"',secret = '"+ sharedSecret.toString() +"' WHERE username = '"+username+"'");*/
 		if (this.validate(username,password)) {
 			AM.generateToken(username);
 			user = UserManager.fetchUser(username);
 			Gson gson = new Gson();
 			String uJson = gson.toJson(user);
+			//Date curDate = new Date(new Date().getTime());
+			//out.println(curDate);
+			//Date expDate = new Date(new Date().getTime() + (3600 * 1000));
+			//out.println(expDate);
 			if ("driver".equals(user.getStatus())) {
 				driver = UserManager.fetchDriver(user.getId());
 				String dJson = gson.toJson(driver);
@@ -56,8 +102,8 @@ public class Login extends HttpServlet {
 			}
 		}  else {
 			//out.print("Username or Password incorrect");
-			//RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");
-			//rs.include(request, response);
+			request.setAttribute("errorMessage", "Invalid Username or Password");
+			request.getRequestDispatcher("../login/login.jsp").forward(request, response);
 	    }
 	}
 	

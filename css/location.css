@@ -55,10 +55,16 @@ tr th:nth-child(3) {
     margin-left: 15%;
     cursor: pointer;
 }
-.delete_button {
-    color: #ff0000;
-    float: right;
+.delete_container {
+	float: right;
     margin-right: 15%;
+    cursor: pointer;
+}
+.delete_button {
+	background-color: transparent;
+    color: #ff0000;
+    border: none;
+    font-size: 0.8em;
     cursor: pointer;
 }
 .save_button {
