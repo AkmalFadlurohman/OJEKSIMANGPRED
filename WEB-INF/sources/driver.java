@@ -5,16 +5,14 @@
  */
 package com.ojeksimangpred.bean;
 
-/**
- *
- * @author user
- */
+import java.util.*;
 public class Driver {
    private int id;
    private int totalVotes;
    private int totalScore;
+   
 
-   int getId() {
+   public int getId() {
        return (id);
    }
 
@@ -25,7 +23,7 @@ public class Driver {
    public float getRating() {
        return (totalScore/totalVotes);
    }
-   
+
    public float getVotes() {
        return (totalVotes);
    }

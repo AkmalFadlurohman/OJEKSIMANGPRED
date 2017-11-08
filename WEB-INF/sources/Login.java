@@ -5,9 +5,13 @@ import java.lang.ClassNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.net.URL;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,6 +27,7 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
 import com.ojeksimangpred.bean.*;
+import com.ojeksimangpred.OjolServices.LocationManagerInterface;
 
 
 
@@ -52,9 +57,9 @@ public class Login extends HttpServlet {
 				response.sendRedirect("../profile/profile.jsp?user="+uJson);
 			}
 		}  else {
-			out.print("Username or Password incorrect");
-			RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");
-			rs.include(request, response);
+			//out.print("Username or Password incorrect");
+			//RequestDispatcher rs = request.getRequestDispatcher("../login/login.html");
+			//rs.include(request, response);
 	    }
 	}
 	

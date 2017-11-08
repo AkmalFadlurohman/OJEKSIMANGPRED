@@ -1,5 +1,5 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.User" %>
+<%@ page import="java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*" %>
 <html>
 <head>
     <title>Edit Profile</title>
@@ -12,8 +12,14 @@
     <div class="frame">
         <div class="header">
             <%  
-				String json = request.getParameter("user");
-				User user = new Gson().fromJson(json,User.class);
+            		String uJson = request.getParameter("user");
+				User user = new Gson().fromJson(uJson,User.class);
+				String dJson = null;
+				Driver driver = new Driver();
+				if (user.getStatus().equals("driver")) {
+					dJson = request.getParameter("driver");
+					driver = new Gson().fromJson(dJson,Driver.class);
+				}
 			%>
 			<%@include file="../template/header.jsp"%>
         </div>
@@ -67,7 +73,13 @@
                     </div>
                 </div>
                 <div class="edit_profile_nav">
-                    <a href='profile.jsp?user='<%out.println(json);%>'><div class="button red back" style="float: left; margin-left: 20px;">BACK</div></a>
+                		<%	
+        					if ("driver".equals(user.getStatus())) {
+        						out.println("<a href='profile.jsp?user="+uJson+"&driver="+dJson+"'><div class='button red back' style='float: left; margin-left: 20px;'>BACK</div></a>");
+        					} else {
+        						out.println("<a href='profile.jsp?user="+uJson+"'><div class='button red back' style='float: left; margin-left: 20px;''>BACK</div></a>)");
+        					}
+        				%>
                     <input  name="userName" type="hidden" value=<%out.println(user.getUsername());%>>
                     <input type="submit" value="SAVE" style="float: right;" class="button green save">
                 </div>

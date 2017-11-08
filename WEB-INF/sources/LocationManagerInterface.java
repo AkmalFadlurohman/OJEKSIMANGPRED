@@ -13,7 +13,7 @@ import java.util.*;
 
 public interface LocationManagerInterface {
 	
-	@WebMethod ArrayList retrieveLocation(int driverID);
+	@WebMethod String[] retrieveLocation(int driverID);
 	@WebMethod void addLocation(int driverID,String location);
 	@WebMethod void editLocation(int driverID,String oldLocation,String newLocation);
 	@WebMethod void delLocation(int driverID,String oldLocation);

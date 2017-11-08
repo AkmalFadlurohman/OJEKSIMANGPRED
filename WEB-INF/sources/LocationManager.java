@@ -1,5 +1,5 @@
 package com.ojeksimangpred.OjolServices;
-
+import com.ojeksimangpred.OjolServices.LocationManagerInterface;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -17,19 +17,30 @@ import java.util.*;
 public class LocationManager implements LocationManagerInterface {
 	
 	@Override
-	public ArrayList retrieveLocation(int driverID) {
+	public String[] retrieveLocation(int driverID) {
 		Connection connect = null;
 		Statement statement = null;
+		Statement st = null;
 		ResultSet resultSet = null;
-		ArrayList Locations = new ArrayList();
+		ResultSet rS = null;
+		String[] Locations = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_OjolServices","root","");
 		
+			st = connect.createStatement();
+			rS = st.executeQuery("select pref_loc from driver_prefloc where driver_id='"+driverID+"'");
+			int count = 0;
+			while (rS.next()) {
+				count++;
+			}
+			int i = 0;
+			Locations = new String[count];
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("select pref_loc from driver_prefloc where driver_id='"+driverID+"'");
 			while (resultSet.next()) {
-				Locations.add(resultSet.getString("pref_loc"));
+				Locations[i] = resultSet.getString("pref_loc");
+				i++;
 			}
 			connect.close();
 		} catch (SQLException e) {

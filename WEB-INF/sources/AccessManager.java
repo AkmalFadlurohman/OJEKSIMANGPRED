@@ -12,9 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.*;
+import java.text.*;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
+import java.net.URL;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+import com.ojeksimangpred.OjolServices.LocationManagerInterface;
 import com.nimbusds.jwt.*;
 import com.ojeksimangpred.bean.User;
 
@@ -65,6 +70,25 @@ public class AccessManager extends HttpServlet {
 			out.println("Error");
 		}
 	}
+
+	public void doPost(HttpServletRequest request,HttpServletResponse response)
+	throws ServletException,IOException {
+		String action = request.getParameter("action");
+		PrintWriter out = response.getWriter();
+		if ("addLocation".equals(action)) {
+			URL url = new URL("	http://www.ojeksimangpred.com/OjolServices/LocationManager?wsdl");
+			
+			QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "LocationManagerService");
+		
+			Service service = Service.create(url, qname);
+		
+			LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
+			
+			int driverID = Integer.parseInt(request.getParameter("driverId"));
+			String newLoc = request.getParameter("new_location");
+			LM.addLocation(driverID,newLoc);
+		}
+	}
 	
 	
 	public void generateToken(String username) {
@@ -108,23 +132,47 @@ public class AccessManager extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	/*boolean checkTokenExpiry(String username, String token) {
-		SecureRandom random = new SecureRandom();
+	boolean checkTokenExpiry(String token) {
 		byte[] sharedSecret = new byte[64];
-		random.nextBytes(sharedSecret);
-		
+		Connection connect = null;
+		ResultSet resultSet = null;
+		Statement statement = null;
+		boolean valid = false;
 		try {
-			JWSSigner signer = new MACSigner(sharedSecret);
-			
-			
-			SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS512), claimsSet);
-			signedJWT.parse(token);
-			JWSVerifier verifier = new MACVerifier(sharedSecret);
-			assertTrue(signedJWT.verify(verifier));
-		} catch(KeyLengthException e ) {
-			e.printStackTrace();
-		} catch(JOSEException e) {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ojeksimangpred_IDServices","root","");
+			if (connect != null) {
+				statement = connect.createStatement();
+				resultSet = statement.executeQuery("SELECT  token,secret  FROM user WHERE token = '"+token+"'");
+		    
+				if (resultSet != null) {
+					sharedSecret = resultSet.getString("secret").getBytes();
+					
+					try {
+						SignedJWT signedJWT = SignedJWT.parse(token);
+
+						JWSVerifier verifier = new MACVerifier(sharedSecret);
+
+						if (signedJWT.verify(verifier)) {
+							Date expDate = signedJWT.getJWTClaimsSet().getExpirationTime();
+							Date curDate = new Date(new Date().getTime());
+							if (curDate.before(expDate)) {
+								valid = true;
+							}							
+						}
+					} catch(ParseException e ) {
+						e.printStackTrace();
+					} catch(JOSEException e) {
+						e.printStackTrace();
+					}
+					connect.close();			
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();;
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}*/
+		return valid;
+	}
 }

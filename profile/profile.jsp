@@ -1,5 +1,5 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*" %>
+<%@ page import="java.util.*,java.net.URL,javax.xml.namespace.QName,javax.xml.ws.Service,javax.servlet.*,javax.servlet.http.*,com.google.gson.Gson,com.ojeksimangpred.bean.*,com.ojeksimangpred.OjolServices.LocationManagerInterface" %>
 <html>
 <head>
     <title>Profile</title>
@@ -31,7 +31,7 @@
         <div class="profile_container">
             <div class="subheader">
                 <div class="title"><h1>My Profile</h1></div>
-                <div class="edit_profile_button"><a href='edit_profile.jsp?user=<%out.println(uJson);%>'>✎</a></div>
+                <div class="edit_profile_button"><a href='edit_profile.jsp?user=<%out.println(uJson);%>&driver=<%out.println(dJson);%>'>✎</a></div>
             </div>
             <div class="profile_info_container">
                 <img class="profile_pict_frame" id="profile_pict" src="../IDServices/ImageRetriever?username=<% out.println(user.getUsername()); %>" onerror="this.src='../img/default_profile.jpeg'">
@@ -61,9 +61,34 @@
            		%>
             		<div class="subheader">
                 		<div class="title"><h1>Preferred Locations</h1></div>
-                		<div class="edit_prefloc_button"><a href="edit_location.jsp?user='<%out.println(uJson); %>">✎</a></div>
+                		<div class="edit_prefloc_button"><a href='edit_location.jsp?user=<%out.println(uJson);%>&driver=<%out.println(dJson);%>'>✎</a></div>
             		</div>
             		<div class="prefloc_list">
+            			<%	
+            				URL url = new URL("	http://www.ojeksimangpred.com/OjolServices/LocationManager?wsdl");
+    					
+    						QName qname = new QName("http://OjolServices.ojeksimangpred.com/", "LocationManagerService");
+    				
+    						Service service = Service.create(url, qname);
+    						LocationManagerInterface LM = service.getPort(LocationManagerInterface.class);
+            				if (dJson != null) {
+            					int size = LM.retrieveLocation(driver.getId()).length;
+            					StringBuilder builder = new StringBuilder();
+            					builder.append("<ul>");
+            					for (int i=0;i<=4;i++) {
+            						if (i != size-1) {
+            							builder.append("<li>►"+LM.retrieveLocation(driver.getId())[i]+"</li><ul>");
+            							i++;
+            						} else {	
+            							builder.append("<li>►"+LM.retrieveLocation(driver.getId())[i]+"</li>");
+            						}
+            					}
+            					for (int i=0;i<=4;i++) {
+            						builder.append("</ul>");
+            					}
+            					out.println(builder.toString());
+            				}	
+            			%>
             		</div>
        		</div>    
         </div>
